@@ -22,43 +22,77 @@
 
         /* 头部样式 */
         .header {
+            height: 60px;
             background: #1a73e8;
-            padding: 15px 20px;
-            position: sticky;
+            padding: 30px 20px 15px 20px !important;
+            position: fixed;
             top: 0;
-            z-index: 100;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            left: 0;
+            right: 0;
+            z-index: 900;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
         .back-button {
-            color: white;
+            position: absolute !important;
+            right: 5px !important;
+            top: 10px !important;
+            background-color: #2196F3 !important;
+            color: white !important;
+            border: none !important;
+            border-radius: 4px;
+            padding: 4px 8px !important;
             text-decoration: none;
-            font-weight: 500;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2) !important;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            z-index: 1;
+            transition: all 0.3s ease !important;
+        }
+
+        .back-button:hover {
+            background-color: #1976D2 !important;
+        }
+
+        .chapter-indicator {
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-align: center;
+            color: white;
+            padding: 0 20px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            top: 8px;
         }
 
         /* 主容器样式 */
         .container {
             display: flex;
-            gap: 20px;
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 20px;
+            gap: 0;
+            max-width: 100%;
+            margin: 0;
+            padding: 0;
             min-height: calc(100vh - 60px);
+            margin-top: 60px;
         }
 
         /* 左侧导航栏样式 */
         .nav-sidebar {
-            width: 250px;
+            width: 20%;
             background: white;
             padding: 20px;
-            border-radius: 12px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
             position: sticky;
-            top: 80px;
-            height: fit-content;
+            top: 60px;
+            height: calc(100vh - 60px);
+            overflow-y: auto;
             transition: all 0.3s ease;
         }
 
@@ -115,8 +149,10 @@
         /* 右侧内容区样式 */
         .content-area {
             flex: 1;
-            max-width: 800px;
-            margin: 0 auto;
+            width: 80%;
+            padding: 20px 40px;
+            overflow-y: auto;
+            margin-top: 0;
         }
 
         .content-area h2 {
@@ -200,48 +236,23 @@
         /* 移动端适配 */
         @media (max-width: 768px) {
             .header {
-                padding: 10px 15px;
+                padding: 25px 20px 12px 20px !important;
             }
-
-            .container {
-                flex-direction: column;
-                padding: 15px;
+            
+            .chapter-indicator {
+                font-size: 1rem;
+                padding: 0 10px;
+                top: 8px;
             }
-
-            .nav-sidebar {
-                width: 100%;
-                position: static;
-                margin-bottom: 20px;
-            }
-
-            .chapter-list {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 10px;
-            }
-
-            .chapter-item {
-                flex: 1;
-                min-width: 140px;
-                text-align: center;
-                padding: 10px;
-                margin: 0;
-            }
-
-            .question-card {
-                padding: 20px;
-            }
-
-            .options-group {
-                flex-direction: column;
-            }
-
-            .option-button {
-                max-width: none;
+            
+            .back-button {
+                top: 8px !important;
+                padding: 3px 6px !important;
+                font-size: 0.75rem;
             }
         }
 
-        /* 深色模式适配 */
+        /* 暗色模式支持 */
         @media (prefers-color-scheme: dark) {
             body {
                 background-color: #1a1a1a;
@@ -397,6 +408,7 @@
             }
         }
 
+        /* 修改计数器样式 */
         .counter-section {
             background: white;
             padding: 10px 15px;
@@ -406,53 +418,71 @@
             gap: 5px;
             font-size: 1rem;
             position: fixed;
-            top: 40px;
-            right: 20px;
+            top: 45px;
+            right: 0;
             z-index: 99;
             min-width: 120px;
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
 
-        .counter-section span {
-            display: block;
-            color: #333;
+        /* 修改隐藏状态的样式 */
+        .counter-section.hidden {
+            transform: translateX(calc(100% - 30px));
+            background: rgba(33, 150, 243, 0.9);
+            box-shadow: -2px 0 8px rgba(0, 0, 0, 0.15);
         }
 
-        .counter-section > span {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        /* 修改隐藏状态时的提示标签 */
+        .counter-section::before {
+            content: "◀";
+            position: absolute;
+            left: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0;
+            transition: all 0.3s ease;
+            color: white;
+            font-size: 14px;
         }
 
-        .counter-section span span {
-            color: #1a73e8;
-            font-weight: 500;
+        .counter-section.hidden::before {
+            opacity: 1;
         }
 
-        /* 移动端适配 */
-        @media (max-width: 768px) {
-            .counter-section {
-                right: 10px;
-                font-size: 0.9rem;
-                padding: 10px 15px;
-            }
+        /* 隐藏状态下文字颜色变化 */
+        .counter-section.hidden span,
+        .counter-section.hidden span span {
+            color: transparent;
         }
 
+        /* 悬停效果 */
+        .counter-section:hover {
+            opacity: 1;
+            transform: translateX(calc(100% - 35px));
+        }
+
+        .counter-section:not(.hidden):hover {
+            transform: none;
+            background: rgba(255, 255, 255, 0.98);
+        }
+
+        /* 暗色模式支持 */
         @media (prefers-color-scheme: dark) {
-            .counter-section {
-                background: #2d2d2d;
+            .counter-section.hidden {
+                background: rgba(33, 150, 243, 0.7);
             }
-            .counter-section span {
-                color: #e0e0e0;
-            }
-            .counter-section span span {
-                color: #64b5f6;
+            
+            .counter-section:not(.hidden):hover {
+                background: rgba(45, 45, 45, 0.98);
             }
         }
     </style>
 </head>
 <body>
     <div class="header">
-        <a href="index.html" class="back-button">返回主页</a>
+        <div class="chapter-indicator" id="chapterIndicator"></div>
+        <a href="index.html" class="back-button">返回首页 →</a>
     </div>
     
     <div class="overlay" id="overlay"></div>
@@ -471,7 +501,6 @@
 
         <!-- 右侧内容区 -->
         <main class="content-area" id="contentArea">
-            <h2 id="currentChapter">请选择章节</h2>
             <div class="counter-section">
                 <span>总题数: <span id="totalQuestions">0</span></span>
                 <span>已答题: <span id="correctAnswers">0</span></span>
@@ -552,8 +581,20 @@
                 }
                 
                 initializeChapterList();
-                // 初始化显示总题数
                 document.getElementById('totalQuestions').textContent = totalQuestions;
+                
+                // 修改这部分：自动显示第一章但不触发移动端菜单
+                const firstChapter = Object.keys(questions)[0];
+                if (firstChapter) {
+                    // 设置第一个章节为激活状态
+                    const firstChapterItem = document.querySelector('.chapter-item');
+                    if (firstChapterItem) {
+                        firstChapterItem.classList.add('active');
+                    }
+                    
+                    // 直接显示第一章内容，但不触发菜单切换
+                    showChapterQuestions(firstChapter, false); // 添加 false 参数
+                }
             } catch (error) {
                 console.error('加载题目失败:', error);
             }
@@ -583,9 +624,13 @@
         }
 
         // 显示章节题目
-        function showChapterQuestions(chapter) {
-            // 更新章节标题
-            document.getElementById('currentChapter').textContent = chapter;
+        function showChapterQuestions(chapter, toggleMenuOnMobile = true) {
+            // 获取章节序号
+            const chapterNum = chapter.match(/第(\d+)章/)?.[1] || '';
+            
+            // 更新顶部章节指示器
+            const chapterIndicator = document.getElementById('chapterIndicator');
+            chapterIndicator.textContent = `${chapter} 判断题`;
             
             // 更新章节选中状态
             document.querySelectorAll('.chapter-item').forEach(item => {
@@ -613,7 +658,8 @@
                 questionsList.appendChild(questionCard);
             });
 
-            if (window.innerWidth <= 768) {
+            // 修改这部分：仅在需要时切换菜单
+            if (toggleMenuOnMobile && window.innerWidth <= 768) {
                 toggleMenu();
             }
 
@@ -624,7 +670,8 @@
 
         // 检查答案
         function checkAnswer(index, userAnswer) {
-            const chapter = document.getElementById('currentChapter').textContent;
+            // 从章节指示器获取当前章节
+            const chapter = document.getElementById('chapterIndicator').textContent.replace(' 判断题', '');
             const question = questions[chapter][index];
             const answerSection = document.getElementById(`answer-${index}`);
             const optionsGroup = answerSection.previousElementSibling;
@@ -753,6 +800,23 @@
                 e.preventDefault();
             }
         }, { passive: false });
+
+        // 添加计数器隐藏功能
+        document.addEventListener('DOMContentLoaded', () => {
+            const counterSection = document.querySelector('.counter-section');
+            
+            // 从 localStorage 获取状态
+            const isHidden = localStorage.getItem('judgeCounterSectionHidden') === 'true';
+            if (isHidden) {
+                counterSection.classList.add('hidden');
+            }
+            
+            counterSection.addEventListener('click', () => {
+                counterSection.classList.toggle('hidden');
+                // 保存状态到 localStorage
+                localStorage.setItem('judgeCounterSectionHidden', counterSection.classList.contains('hidden'));
+            });
+        });
     </script>
 </body>
 </html> 
