@@ -451,7 +451,7 @@
             }
         }
 
-        /* 计数器样式 */
+        /* 修改计数器样式 */
         .counter-section {
             background: white;
             padding: 10px 15px;
@@ -461,26 +461,64 @@
             gap: 5px;
             font-size: 1rem;
             position: fixed;
-            top: 40px;
-            right: 20px;
+            top: 45px;
+            right: 0;
             z-index: 99;
             min-width: 120px;
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
 
-        .counter-section span {
-            display: block;
-            color: #333;
+        /* 修改隐藏状态的样式 */
+        .counter-section.hidden {
+            transform: translateX(calc(100% - 30px));
+            background: rgba(33, 150, 243, 0.9);
+            box-shadow: -2px 0 8px rgba(0, 0, 0, 0.15);
         }
 
-        .counter-section > span {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        /* 修改隐藏状态时的提示标签 */
+        .counter-section::before {
+            content: "◀";
+            position: absolute;
+            left: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0;
+            transition: all 0.3s ease;
+            color: white;
+            font-size: 14px;
         }
 
-        .counter-section span span {
-            color: #2196F3;
-            font-weight: 500;
+        .counter-section.hidden::before {
+            opacity: 1;
+        }
+
+        /* 隐藏状态下文字颜色变化 */
+        .counter-section.hidden span,
+        .counter-section.hidden span span {
+            color: transparent;
+        }
+
+        /* 悬停效果 */
+        .counter-section:hover {
+            opacity: 1;
+            transform: translateX(calc(100% - 35px));
+        }
+
+        .counter-section:not(.hidden):hover {
+            transform: none;
+            background: rgba(255, 255, 255, 0.98);
+        }
+
+        /* 暗色模式支持 */
+        @media (prefers-color-scheme: dark) {
+            .counter-section.hidden {
+                background: rgba(33, 150, 243, 0.7);
+            }
+            
+            .counter-section:not(.hidden):hover {
+                background: rgba(45, 45, 45, 0.98);
+            }
         }
 
         /* 章节进度样式 */
@@ -636,26 +674,33 @@
                 const questions = {};
                 let currentChapter = null;
                 let currentQuestion = null;
-                totalQuestions = 0;  // 重置总题数计数器
+                totalQuestions = 0;
                 
-                // 解析文本内容
                 const lines = text.split('\n');
                 for (let line of lines) {
                     line = line.trim();
                     if (!line) continue;
                     
+                    // 检测新章节
                     if (line.startsWith('第')) {
+                        // 在切换到新章节前，确保将上一个题目添加到当前章节
+                        if (currentQuestion && currentChapter) {
+                            questions[currentChapter].push(currentQuestion);
+                            totalQuestions++;
+                        }
                         currentChapter = line;
                         questions[currentChapter] = [];
+                        currentQuestion = null;  // 重置当前题目
                         continue;
                     }
                     
-                    // 检测题目
+                    // 检测新题目
                     const questionMatch = line.match(/^\d+\.\s/);
                     if (questionMatch) {
-                        if (currentQuestion) {
+                        // 如果已有当前题目，先保存它
+                        if (currentQuestion && currentChapter) {
                             questions[currentChapter].push(currentQuestion);
-                            totalQuestions++;  // 增加总题数计数
+                            totalQuestions++;
                         }
                         currentQuestion = {
                             question: line.substring(questionMatch[0].length),
@@ -666,17 +711,19 @@
                     }
                     
                     // 检测选项和答案
-                    if (line.startsWith('答案：')) {
-                        currentQuestion.answer = line.substring(3);
-                    } else if (line.match(/^[A-D]\./)) {
-                        currentQuestion.options.push(line);
+                    if (currentQuestion) {  // 确保有当前题目
+                        if (line.startsWith('答案：')) {
+                            currentQuestion.answer = line.substring(3);
+                        } else if (line.match(/^[A-D]\./)) {
+                            currentQuestion.options.push(line);
+                        }
                     }
                 }
                 
                 // 添加最后一个题目
                 if (currentQuestion && currentChapter) {
                     questions[currentChapter].push(currentQuestion);
-                    totalQuestions++;  // 增加总题数计数
+                    totalQuestions++;
                 }
                 
                 // 更新总题数显示
@@ -842,6 +889,22 @@
             // 更新导航栏显示
             initializeNavigation();
         }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const counterSection = document.querySelector('.counter-section');
+            
+            // 从 localStorage 获取状态
+            const isHidden = localStorage.getItem('counterSectionHidden') === 'true';
+            if (isHidden) {
+                counterSection.classList.add('hidden');
+            }
+            
+            counterSection.addEventListener('click', () => {
+                counterSection.classList.toggle('hidden');
+                // 保存状态到 localStorage
+                localStorage.setItem('counterSectionHidden', counterSection.classList.contains('hidden'));
+            });
+        });
     </script>
 </body>
 </html> 
