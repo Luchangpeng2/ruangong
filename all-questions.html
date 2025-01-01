@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>全部简答题 - 软件工程复习</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f7fa;
+            line-height: 1.6;
+            color: #2c3e50;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #1a73e8;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(26, 115, 232, 0.2);
+        }
+
+        .back-button:hover {
+            background-color: #1557b0;
+            transform: translateY(-1px);
+        }
+
+        h1 {
+            color: #1a73e8;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .chapter-section {
+            margin: 30px 0;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .chapter-title {
+            color: #1a73e8;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .question-item {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #1a73e8;
+        }
+
+        .question-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .answer {
+            display: none;
+            margin-top: 15px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #34a853;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #2c3e50;
+            white-space: pre-wrap;
+        }
+
+        .toggle-button {
+            background: #1a73e8;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9em;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .toggle-button:hover {
+            background: #1557b0;
+        }
+
+        .toggle-all-button {
+            background: #34a853;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            margin: 20px 0;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+
+        .toggle-all-button:hover {
+            background: #2d8e47;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            body {
+                background-color: #1a1a1a;
+                color: #e0e0e0;
+            }
+
+            .chapter-section {
+                background: #2d2d2d;
+            }
+
+            .question-item {
+                background: #333;
+            }
+
+            .answer {
+                background: #2d2d2d;
+                color: #e0e0e0;
+                border-left-color: #34a853;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+
+            .chapter-section {
+                padding: 15px;
+            }
+        }
+
+        .answer-section {
+            margin: 10px 0;
+        }
+
+        .answer-section-title {
+            font-weight: 600;
+            color: #1a73e8;
+            margin-bottom: 8px;
+        }
+
+        .answer-point {
+            margin-left: 20px;
+            margin-bottom: 5px;
+            position: relative;
+        }
+
+        .answer-point:before {
+            content: "•";
+            position: absolute;
+            left: -15px;
+            color: #666;
+        }
+
+        .answer-section-title {
+            color: #4a9eff;
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-button">返回主页</a>
+    <h1>全部简答题</h1>
+    
+    <button class="toggle-all-button" onclick="toggleAllAnswers()">显示/隐藏所有答案</button>
+
+    <div id="questions-container">
+        <!-- 问题将通过JavaScript动态加载 -->
+    </div>
+
+    <script>
+        // 题目数据
+        const questions = [
+            {
+                chapter: "软件工程基础",
+                title: "1. 为什么说软件工程的发展可以在一定程度上解决软件危机的各种弊端?",
+                answer: "软件工程通过规范化的开发过程、标准化的开发方法、模块化设计和系统化的管理，减少了开发中的错误，提高了软件的质量、可维护性和可扩展性，从而有效应对了软件危机中的诸如开发周期长、质量差、维护困难等问题。"
+            },
+            {
+                chapter: "软件工程基础",
+                title: "2. 请简述软件工程的基本原则",
+                answer: "软件工程的基本原则:\n\n需求明确：确保需求清晰、可行。\n模块化设计：将系统分解成可管理的小模块。\n重用性：提高代码和设计的重用性，减少重复开发。\n逐步开发：通过迭代逐步开发，快速响应需求变化。\n系统性：考虑系统整体的设计和发展。"
+            },
+            {
+                chapter: "软件工程基础",
+                title: "3. 请简述软件工程的目标",
+                answer: "软件工程的目标:\n\n高质量：确保软件的功能、性能和可靠性满足需求。\n按时交付：在规定的时间内完成开发。\n成本控制：在预算内实现项目目标。\n可维护性：确保软件易于维护和扩展。"
+            },
+            {
+                chapter: "软件开发模型",
+                title: "4. 在统一软件开发过程模型中核心工作流程包含哪些?",
+                answer: "核心工作流程包括需求分析、系统设计、编码实现、软件测试、交付与维护。"
+            },
+            {
+                chapter: "软件开发模型",
+                title: "5. 当需求不明确且系统复杂时选用的开发模型",
+                answer: "适合使用增量模型或原型模型，可以通过逐步开发或构建原型来进一步明确需求。"
+            },
+            {
+                chapter: "软件生命周期",
+                title: "6. 软件生命周期的内在特征",
+                answer: "软件生命周期具有阶段性特征，从需求分析到设计、实现、测试、部署及维护，每个阶段都有明确的目标，并为下一个阶段奠定基础。"
+            },
+            {
+                chapter: "需求分析",
+                title: "7. 可行性研究的内容",
+                answer: "包括技术可行性、经济可行性、操作可行性和时间可行性，评估项目实施的可行性和风险。"
+            },
+            {
+                chapter: "需求分析",
+                title: "8. 如何理解需求分析的作用和重要性?",
+                answer: "需求分析是软件开发的基础，明确需求能确保系统设计和实现满足用户需求，避免后期开发中的返工和需求变更。"
+            },
+            {
+                chapter: "软件设计",
+                title: "9. 为什么说'高内聚、低耦合'的设计有利于提高系统的独立性?",
+                answer: "高内聚保证模块内部功能紧密，低耦合减少模块间的依赖关系，使系统更加模块化、灵活，便于维护和扩展。"
+            },
+            {
+                chapter: "需求分析",
+                title: "10. 请简述数据字典的作用",
+                answer: "数据字典记录系统中所有数据元素的定义，包括数据类型、格式及其关系，有助于理解系统数据结构，确保数据一致性和准确性。"
+            },
+            {
+                chapter: "需求分析",
+                title: "11. 请简述数据流图的作用",
+                answer: "数据流图用于描述系统数据的流动及处理过程，有助于分析和理解系统功能和数据之间的关系。"
+            },
+            {
+                chapter: "面向对象分析",
+                title: "12. 请简述面向对象分析的过程",
+                answer: "面向对象分析包括需求建模、系统建模和用例建模，重点是识别系统中的对象及其交互关系。"
+            },
+            {
+                chapter: "面向对象分析",
+                title: "13. 如何画出用例图",
+                answer: "从用户需求中提取关键功能，识别系统的参与者和用例，并绘制用例图，明确系统的功能需求和用户交互。"
+            },
+            {
+                chapter: "面向对象分析",
+                title: "14. 类间的外部关系类型及其语义",
+                answer: "类间关系包括:\n\n依赖关系：一个类依赖于另一个类，表示某类的变化可能影响依赖类。\n关联关系：表示两个类之间的联系，如一对一、一对多。\n泛化关系：表示继承关系，一个类是另一个类的特化。\n实现关系：一个类实现接口或抽象类。"
+            },
+            {
+                chapter: "软件架构",
+                title: "15. 软件体系结构的作用体现在哪些方面？",
+                answer: "软件体系结构定义了系统组件及其交互方式，提供系统设计框架，有助于系统的可维护性、可扩展性和性能优化。"
+            },
+            {
+                chapter: "编码规范",
+                title: "16. 请简述编码风格的重要性。要形成良好的编码风格可以从哪些方面做起？",
+                answer: "良好的编码风格提高代码的可读性、可维护性和团队协作效率。通过统一命名、注释、代码格式等方式来形成良好的编码风格。"
+            },
+            {
+                chapter: "软件测试",
+                title: "17. 软件测试的常用模型有哪些,请简述它们的优缺点",
+                answer: "软件测试常用模型:\n\nV模型：优点是开发和测试阶段有清晰划分；缺点是对需求变化适应性差。\n螺旋模型：优点是风险管理和需求调整灵活；缺点是复杂度较高。\n增量模型：优点是逐步交付，可以适应需求变化；缺点是可能导致模块间难以集成。"
+            },
+            {
+                chapter: "软件质量",
+                title: "18. 请简述McCall对软件质量的定义",
+                answer: "McCall提出的软件质量模型包括功能适应性、可靠性、效率、可维护性等方面，强调多维度的质量保证。"
+            },
+            {
+                chapter: "软件测试",
+                title: "19. 什么是调试？什么是测试？二者有何区别？",
+                answer: "调试与测试的区别:\n\n调试：通过分析和修复代码中的错误来确保程序正常运行。\n测试：通过执行程序来验证软件是否满足需求，通常使用测试用例。"
+            },
+            {
+                chapter: "软件测试",
+                title: "20. 请简述静态测试和动态测试的区别",
+                answer: "静态测试与动态测试的区别:\n\n静态测试：不执行程序，主要通过代码审查和静态分析来发现问题。\n动态测试：执行程序，检验软件的行为和性能，发现运行时的问题。"
+            }
+        ];
+
+        function createAnswerElement(answerText) {
+            const answerDiv = document.createElement('div');
+            answerDiv.className = 'answer';
+            
+            // 将答案文本按段落分割
+            const sections = answerText.split('\n\n');
+            
+            sections.forEach(section => {
+                if (section.trim()) {
+                    const lines = section.split('\n');
+                    const sectionDiv = document.createElement('div');
+                    sectionDiv.className = 'answer-section';
+                    
+                    lines.forEach((line, index) => {
+                        if (line.trim()) {
+                            if (line.includes(':') || line.endsWith(':') || /^\d+\./.test(line)) {
+                                // 这是一个标题行
+                                const title = document.createElement('div');
+                                title.className = 'answer-section-title';
+                                title.textContent = line;
+                                sectionDiv.appendChild(title);
+                            } else if (line.startsWith('-')) {
+                                // 这是一个要点
+                                const point = document.createElement('div');
+                                point.className = 'answer-point';
+                                point.textContent = line.substring(1).trim();
+                                sectionDiv.appendChild(point);
+                            } else {
+                                // 普通文本
+                                const text = document.createElement('div');
+                                text.textContent = line;
+                                sectionDiv.appendChild(text);
+                            }
+                        }
+                    });
+                    
+                    answerDiv.appendChild(sectionDiv);
+                }
+            });
+            
+            return answerDiv;
+        }
+
+        function createChapterSections() {
+            const container = document.getElementById('questions-container');
+            const chapters = new Set(questions.map(q => q.chapter));
+            
+            chapters.forEach(chapter => {
+                const chapterSection = document.createElement('div');
+                chapterSection.className = 'chapter-section';
+                
+                const chapterTitle = document.createElement('h2');
+                chapterTitle.className = 'chapter-title';
+                chapterTitle.textContent = chapter;
+                chapterSection.appendChild(chapterTitle);
+                
+                const chapterQuestions = questions.filter(q => q.chapter === chapter);
+                chapterQuestions.forEach((question, index) => {
+                    const questionItem = document.createElement('div');
+                    questionItem.className = 'question-item';
+                    
+                    const questionTitle = document.createElement('div');
+                    questionTitle.className = 'question-title';
+                    questionTitle.textContent = question.title;
+                    
+                    const answer = createAnswerElement(question.answer);
+                    
+                    const toggleButton = document.createElement('button');
+                    toggleButton.className = 'toggle-button';
+                    toggleButton.textContent = '显示答案';
+                    toggleButton.onclick = () => {
+                        const isHidden = answer.style.display === 'none' || answer.style.display === '';
+                        answer.style.display = isHidden ? 'block' : 'none';
+                        toggleButton.textContent = isHidden ? '隐藏答案' : '显示答案';
+                    };
+                    
+                    questionItem.appendChild(questionTitle);
+                    questionItem.appendChild(answer);
+                    questionItem.appendChild(toggleButton);
+                    chapterSection.appendChild(questionItem);
+                });
+                
+                container.appendChild(chapterSection);
+            });
+        }
+
+        function toggleAllAnswers() {
+            const answers = document.querySelectorAll('.answer');
+            const buttons = document.querySelectorAll('.toggle-button');
+            const firstAnswer = answers[0];
+            const isHidden = firstAnswer.style.display === 'none' || firstAnswer.style.display === '';
+            
+            answers.forEach(answer => {
+                answer.style.display = isHidden ? 'block' : 'none';
+            });
+            
+            buttons.forEach(button => {
+                button.textContent = isHidden ? '隐藏答案' : '显示答案';
+            });
+        }
+
+        // 页面加载时初始化
+        window.onload = function() {
+            createChapterSections();
+        };
+    </script>
+</body>
+</html> 
